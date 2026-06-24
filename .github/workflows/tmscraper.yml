@@ -1,0 +1,36 @@
+name: Daily TM Scraper
+
+on:
+  schedule:
+    - cron: '30 5 * * *'   # 11:00 AM IST
+    - cron: '0 7 * * *'    # 12:30 PM IST
+    - cron: '30 10 * * *'  # 4:00 PM IST
+  workflow_dispatch:        # manual trigger for testing
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          IMAP_SERVER: ${{ secrets.IMAP_SERVER }}
+          EMAIL_ID: ${{ secrets.EMAIL_ID }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          SENDER_MAIL: ${{ secrets.SENDER_MAIL }}
+          OPHEAD_MAIL: ${{ secrets.OPHEAD_MAIL }}
+          SENDER_MAIL_PASS: ${{ secrets.SENDER_MAIL_PASS }}
+          CC_EMAIL: ${{ secrets.CC_EMAIL }}
+        run: python Daily_Tm_scraper.py
