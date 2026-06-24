@@ -1,0 +1,5 @@
+imaplib2
+python-dotenv
+beautifulsoup4
+pandas
+lxml
