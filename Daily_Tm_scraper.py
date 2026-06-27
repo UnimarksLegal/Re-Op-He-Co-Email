@@ -146,12 +146,13 @@ for mail_id in email_ids:
         print(f"Error processing email {mail_id}: {e}")
         # ❌ do NOT mark as read
 
-
-mail.logout()
+try:
+    mail.logout()
+except:
+    pass
 
 if not any([compilance_parts, opposition_parts, hearings_parts, renewal_parts]):
     print("Nothing to send today.")
-    mail.logout()
     exit(0)
 
 compilance = "".join(compilance_parts) or "<p>No data today.</p>"
